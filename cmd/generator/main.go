@@ -14,25 +14,24 @@ import (
 )
 
 var (
-	//go:embed templates/challenge.yml.tmpl
+	//go:embed templates/challenge.yaml.tmpl
 	challengeTemplate string
 
 	//go:embed templates/writeup.md.tmpl
 	writeupTemplate string
 
-	//go:embed templates/README.md.tmpl
-	readmeTemplate string
+	genres []string = []string{"geo", "sns", "crypto", "transportation", "darkweb", "history", "company", "misc", "hardware", "military"}
 
-	genres []string = []string{"crypto", "hardware", "misc", "network", "osint", "pwn", "rev", "web"}
-
-	challengeFormat = "^[a-z0-9_!?]+$"
+	challengeFormat = "^[A-Za-z0-9_!?]+$"
 	challengeRegExp = regexp.MustCompile(challengeFormat)
 
-	flagFormat = "^HogeCTF23{[^{}]+}$"
+	flagPrefix = "Diver24"
+	flagFormat = fmt.Sprintf("^%v{[^{}]+}$", flagPrefix)
 	flagRegExp = regexp.MustCompile(flagFormat)
 )
 
 type challengeInfo struct {
+	FlagPrefix    string
 	ChallengeName string
 	Author        string
 	Genre         string
@@ -92,6 +91,7 @@ func main() {
 	}
 
 	info := challengeInfo{
+		FlagPrefix:    flagPrefix,
 		ChallengeName: challengeName,
 		Author:        author,
 		Genre:         genre,
@@ -101,8 +101,9 @@ func main() {
 	// ready a directory structure
 	// - make directory(./genre/challengeName)
 	//   - directory: build, files, solver
-	//   - file: README.md, flag.txt, challenge.yml, writeup/README.md
-	err = os.MkdirAll(filepath.Join(genre, challengeName), os.ModePerm)
+	//   - file: flag.txt, challenge.yml, writeup/README.md
+	challBaseDir := filepath.Join("..", genre, challengeName)
+	err = os.MkdirAll(challBaseDir, os.ModePerm)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed os.MkdirAll(genre/challengeName): %s", err.Error())
 		os.Exit(1)
@@ -110,7 +111,7 @@ func main() {
 
 	dirs := []string{"build", "public", "solver", "writeup"}
 	for _, dirName := range dirs {
-		err = os.MkdirAll(filepath.Join(genre, challengeName, dirName), os.ModePerm)
+		err = os.MkdirAll(filepath.Join(challBaseDir, dirName), os.ModePerm)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "failed os.MkdirAll(genre/challengeName/%s): %s", dirName, err.Error())
 			os.Exit(1)
@@ -118,9 +119,9 @@ func main() {
 	}
 
 	// write default description for each file
-	files := []string{"README.md", "flag.txt", "challenge.yml", "writeup/README.md"}
+	files := []string{"flag.txt", "challenge.yaml", "writeup/README.md"}
 	for _, fileName := range files {
-		if err := readyFile(fileName, info); err != nil {
+		if err := readyFile(fileName, info, challBaseDir); err != nil {
 			fmt.Fprintf(os.Stderr, "failed readyFile: %s", err.Error())
 			os.Exit(1)
 		}
@@ -137,8 +138,8 @@ func generateMarkdown(templateName string, templateStr string, info challengeInf
 	return writer.String(), err
 }
 
-func readyFile(fileName string, info challengeInfo) error {
-	fp, err := os.Create(filepath.Join(info.Genre, info.ChallengeName, fileName))
+func readyFile(fileName string, info challengeInfo, challBaseDir string) error {
+	fp, err := os.Create(filepath.Join(challBaseDir, fileName))
 	if err != nil {
 		return fmt.Errorf("failed os.Create(genre/challengeName/%s): %w", fileName, err)
 	}
@@ -146,17 +147,10 @@ func readyFile(fileName string, info challengeInfo) error {
 
 	// write template message
 	switch fileName {
-	case "README.md":
-		readmeMd, err := generateMarkdown("README", readmeTemplate, info)
-		if err != nil {
-			return fmt.Errorf("failed generateMarkdown for challenge.yml: %w", err)
-		}
-		fmt.Fprint(fp, readmeMd)
-		break
 	case "flag.txt":
 		fmt.Fprintln(fp, info.Flag)
 		break
-	case "challenge.yml":
+	case "challenge.yaml":
 		challengeYaml, err := generateMarkdown("challenge", challengeTemplate, info)
 		if err != nil {
 			return fmt.Errorf("failed generateMarkdown for challenge.yml: %w", err)

@@ -12,14 +12,14 @@ author: "{{ .Author }}"           # TODO: 自分のアカウント名を設定�
 category: "{{ .Genre }}"          # TODO: カテゴリを設定してください
 description: |
     説明文です。Flagを入力するだけの簡単なお仕事。
-    Flagは `TsukuCTF{we1c0me}` です。 # TODO: 説明文を入力してください
-attempts: 5                     # TODO: 提出回数制限がない場合はコメントアウトしてください
+    Flagは `{{ .FlagPrefix }}{we1c0me}` です。 # TODO: 説明文を入力してください
+# attempts: 5                     # TODO: 提出回数制限がない場合はコメントアウトしてください
 
 flags:
     - "{{ .Flag }}"                   # TODO: Flagを追加してください
-    # - "TsukuCTF{we1c0me_t5ukush1}"  # 複数指定も可能
+    # - "{{ .FlagPrefix }}{we1c0me_t5ukush1}"  # 複数指定も可能
 
-    # TODO: 複雑な設定をしたい場合は以下をコメントアウトして、よしなにやってください
+    # TODO: 複雑な設定をしたい場合は以下をよしなに設定してください
     # A static case sensitive flag created with a dictionary
     # - {
     #     type: "static",
@@ -41,16 +41,15 @@ flags:
 # Tags are used to provide additional public tagging to a challenge
 # Accepts strings
 tags:                   # TODO: 問題にタグを設定しない場合はコメントアウトしてください
-    - Tsuku5h1
-    - Y0sh1m1
+    - easy
 
 # connection_info is used to provide a link, hostname, or instructions on how to connect to a challenge
-connection_info: nc hostname 12345  # サーバを利用していない場合はコメントアウトしてください
+# connection_info: nc hostname 12345  # サーバを利用していない場合はコメントアウトしてください
 
 # healthcheck is a tool/script used to check a challenge
 # If connection_info was provided to CTFd when the challenge was installed, it will be passed to the healthcheck script:
 # ./writeup/exploit.sh --connection-info "nc hostname 12345"
-healthcheck: ./solver/solve.py     # healthcheck用のスクリプトがない場合はコメントアウトしてください
+# healthcheck: ./solver/solve.py     # healthcheck用のスクリプトがない場合はコメントアウトしてください
 
 # Provide paths to files from the same directory that this file is in
 # Accepts strings
@@ -61,12 +60,12 @@ files:                              # 配布ファイルがない場合はコメ
 # required but can be nice.
 # Can be removed if unused
 # Accepts dictionaries or strings
-hints:                              # ヒントがない場合はコメントアウトしてください
-    - {
-        content: "問題文に書いてありますよね？",
-        cost: 10
-    }
-    - このヒントのようにcostがない場合はコスト不要なヒントとして表示されます
+# hints:                              # ヒントがない場合はコメントアウトしてください
+    # - {
+    #     content: "問題文に書いてありますよね？",
+    #     cost: 10
+    # }
+    # - このヒントのようにcostがない場合はコスト不要なヒントとして表示されます
 
 # Requirements are used to make a challenge require another challenge to be
 # solved before being available.
