@@ -7,12 +7,18 @@ ctfd-config-generatorはCTFdを用いたCTFの作問を支援するためのツ�
 - [x] 作問に利用するディレクトリやファイルの作成
 
 ## 新しい問題の作り方
-以下のコマンドで環境を作ってください。実行には、[Go](https://go.dev/doc/install)とMakeが必要です。
+以下のコマンドで環境を作ってください。実行には、docker-compose または[Go](https://go.dev/doc/install)と Make が必要です。
 
 ```bash
 git init
 git submodule add https://github.com/diver-osint-ctf/ctfd-config-generator
 echo "include ctfd-config-generator/Makefile" > Makefile
+
+# 以下は好きな方を選択してください
+# 1. docker-composeを使う場合
+echo "version: '3'\nservices:\n  gen:\n    image: golang:1.21\n    volumes:\n      - .:/app\n    working_dir: /app" > docker-compose.yaml
+docker-compose run gen bash -c "make gen"
+# 2. GoとMakeを使う場合
 make gen
 ```
 
@@ -32,3 +38,4 @@ make gen
 
 ## コントリビュート
 バグや要望などがあれば、Issueを作成するかPull Requestを作成してください。
+
