@@ -1,4 +1,4 @@
-module github.com/SecHack365-Fans/TsukuCTF2023/cmd/generator
+module github.com/diver-osint-ctf/ctfd-config-generator
 
 go 1.17
 
