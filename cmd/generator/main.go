@@ -55,7 +55,7 @@ func main() {
 		Label: "challenge name",
 		Validate: func(input string) error {
 			if !challengeRegExp.MatchString(input) {
-				return fmt.Errorf("challenge name should meet %s", challengeFormat)
+				return fmt.Errorf("challenge name and author name should meet %s", challengeFormat)
 			}
 			return nil
 		},
@@ -102,8 +102,7 @@ func main() {
 	// - make directory(./genre/challengeName)
 	//   - directory: build, files, solver
 	//   - file: flag.txt, challenge.yml, writeup/README.md
-	challBaseDir := filepath.Join("..", genre, challengeName)
-	err = os.MkdirAll(challBaseDir, os.ModePerm)
+	err = os.MkdirAll(filepath.Join(genre, challengeName), os.ModePerm)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed os.MkdirAll(genre/challengeName): %s", err.Error())
 		os.Exit(1)
@@ -111,7 +110,7 @@ func main() {
 
 	dirs := []string{"build", "public", "solver", "writeup"}
 	for _, dirName := range dirs {
-		err = os.MkdirAll(filepath.Join(challBaseDir, dirName), os.ModePerm)
+		err = os.MkdirAll(filepath.Join(genre, challengeName, dirName), os.ModePerm)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "failed os.MkdirAll(genre/challengeName/%s): %s", dirName, err.Error())
 			os.Exit(1)
@@ -121,7 +120,7 @@ func main() {
 	// write default description for each file
 	files := []string{"flag.txt", "challenge.yaml", "writeup/README.md"}
 	for _, fileName := range files {
-		if err := readyFile(fileName, info, challBaseDir); err != nil {
+		if err := readyFile(fileName, info); err != nil {
 			fmt.Fprintf(os.Stderr, "failed readyFile: %s", err.Error())
 			os.Exit(1)
 		}
@@ -138,8 +137,8 @@ func generateMarkdown(templateName string, templateStr string, info challengeInf
 	return writer.String(), err
 }
 
-func readyFile(fileName string, info challengeInfo, challBaseDir string) error {
-	fp, err := os.Create(filepath.Join(challBaseDir, fileName))
+func readyFile(fileName string, info challengeInfo) error {
+	fp, err := os.Create(filepath.Join(info.Genre, info.ChallengeName, fileName))
 	if err != nil {
 		return fmt.Errorf("failed os.Create(genre/challengeName/%s): %w", fileName, err)
 	}

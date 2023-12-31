@@ -2,15 +2,15 @@ setup:
 	python -m pip install ctfcli
 
 gen/build:
-	cd cmd/generator && go build -o ../../gen
+	cd ctfd-config-generator/cmd/generator && go build -o ../../gen
 
 gen: gen/build
-	./gen
+	./ctfd-config-generator/gen
 
 ctfcli/init:
 	python -m ctfcli init
-	./cmd/scripts/install.sh
+	./ctfd-config-generator/cmd/scripts/install.sh
 
 ctfcli/sync:
-	./cmd/scripts/sync.sh
+	./ctfd-config-generator/cmd/scripts/sync.sh
 
