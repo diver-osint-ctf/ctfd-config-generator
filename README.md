@@ -1,4 +1,4 @@
-# ctfd-config-generator
+# ctfd-config-generator for DIVER OSINT CTF
 [English Version is here.](./README-en.md)
 
 ctfd-config-generatorはCTFdを用いたCTFの作問を支援するためのツールです。以下の特徴があります。
@@ -10,6 +10,9 @@ ctfd-config-generatorはCTFdを用いたCTFの作問を支援するためのツ�
 以下のコマンドで環境を作ってください。実行には、[Go](https://go.dev/doc/install)とMakeが必要です。
 
 ```bash
+git init
+git submodule add https://github.com/diver-osint-ctf/ctfd-config-generator
+echo "include ctfd-config-generator/Makefile" > Makefile
 make gen
 ```
 
@@ -18,10 +21,9 @@ make gen
 ```bash
 ジャンル名
 └── 問題名
-    ├── README.md       # 問題の概要を書いてください
     ├── build           # 問題サーバで実行されるファイルを配置してください(オプショナル)
     ├── challenge.yml   # CTFdの設定を書いてください
-    ├── flag.txt        # Flagを書いてください
+    ├── flag.txt        # Flagを書いてください。フラグに正規表現を用いたり、複数のフラグを設定する場合はここに複数個のフラグを改行区切りで書いてください。
     ├── public          # 配布用ファイルを配置してください(オプショナル)
     ├── solver          # ソルバを配置してください(オプショナル)
     └── writeup
