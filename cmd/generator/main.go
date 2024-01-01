@@ -10,6 +10,7 @@ import (
 
 	_ "embed"
 
+	"gopkg.in/yaml.v3"
 	"github.com/manifoldco/promptui"
 )
 
@@ -19,13 +20,14 @@ var (
 
 	//go:embed templates/writeup.md.tmpl
 	writeupTemplate string
-
-	genres []string = []string{"geo", "sns", "crypto", "transportation", "darkweb", "history", "company", "misc", "hardware", "military"}
+	
+	defaultFlagPrefix = "HogeCTF"
+	defaultGenres = []string{"web", "misc", "rev", "pwn"}
+	flagPrefix, genres = LoadCondig("config.yaml")
 
 	challengeFormat = "^[A-Za-z0-9_!?]+$"
 	challengeRegExp = regexp.MustCompile(challengeFormat)
 
-	flagPrefix = "Diver24"
 	flagFormat = fmt.Sprintf("^%v{[^{}]+}$", flagPrefix)
 	flagRegExp = regexp.MustCompile(flagFormat)
 )
@@ -125,6 +127,27 @@ func main() {
 			os.Exit(1)
 		}
 	}
+}
+
+func LoadCondig(path string) (string, []string) {
+	type Config struct {
+		FlagPrefix string `yaml:"flag_prefix"`
+		Genres []string `yaml:"genre"`
+	}
+	var config Config = Config{
+		FlagPrefix: defaultFlagPrefix,
+		Genres: defaultGenres,
+	}
+	yml, err := os.ReadFile(path)
+	if err != nil {
+		fmt.Printf("failed to load config file: %s\n", err.Error())
+		return config.FlagPrefix, config.Genres
+	}
+	err = yaml.Unmarshal(yml, &config)
+	if err != nil {
+		fmt.Printf("failed to unmarshal config file: %s\n", err.Error())
+	}
+	return config.FlagPrefix, config.Genres
 }
 
 func generateMarkdown(templateName string, templateStr string, info challengeInfo) (string, error) {
