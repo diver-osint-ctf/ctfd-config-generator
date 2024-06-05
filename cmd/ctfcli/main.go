@@ -67,22 +67,20 @@ func main() {
 				continue
 			}
 			fmt.Printf("Syncing challenge: %s\n", fp)
-			cmd := exec.Command("python", "-m", "ctfcli", "challenge", "sync", fp)
+			cmd := exec.Command("ctf", "challenge", "sync", fp)
 			stdout, stderr, err := execCmd(cmd)
 			fmt.Println(stdout)
 			if err != nil {
-				if(strings.Contains(stderr, "Perhaps you meant install instead of sync")) {
-					fmt.Println("Installing challenge instead of syncing...")
-					cmd := exec.Command("python", "-m", "ctfcli", "challenge", "install", fp)
-					stdout, stderr, err := execCmd(cmd)
-					fmt.Println(stdout)
-					if err != nil {
-						fmt.Println("Error installing challenge: ", err.Error())
-						fmt.Printf("Stderr: %s\n", stderr)
-					}
-				} else {
-					fmt.Println("Error syncing challenge: ", err.Error())
-					fmt.Printf("Stderr: %s\n", stderr)
+				if(stderr != "") {
+					fmt.Printf("Stderr of sync: %s\n", stderr)
+				}
+				fmt.Println("Installing challenge instead of syncing...")
+				cmd := exec.Command("ctf", "challenge", "install", fp)
+				stdout, stderr, err := execCmd(cmd)
+				fmt.Println(stdout)
+				if err != nil {
+					fmt.Println("Error installing challenge: ", err.Error())
+					fmt.Printf("Stderr of install: %s\n", stderr)
 				}
 			}
 
