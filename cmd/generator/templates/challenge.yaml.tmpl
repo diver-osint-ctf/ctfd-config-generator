@@ -13,7 +13,6 @@ category: "{{ .Genre }}"          # TODO: カテゴリを設定してくださ�
 description: |
     説明文です。Flagを入力するだけの簡単なお仕事。
     Flagは `{{ .FlagPrefix }}{we1c0me}` です。 # TODO: 説明文を入力してください
-# attempts: 5                     # TODO: 提出回数制限がない場合はコメントアウトしてください
 
 flags:
     - "{{ .Flag }}"                   # TODO: Flagを追加してください
@@ -42,6 +41,8 @@ flags:
 # Accepts strings
 tags:                   # TODO: 問題にタグを設定しない場合はコメントアウトしてください
     - easy
+#     - medium
+#     - hard
 
 # connection_info is used to provide a link, hostname, or instructions on how to connect to a challenge
 # connection_info: nc hostname 12345  # サーバを利用していない場合はコメントアウトしてください
@@ -54,7 +55,9 @@ tags:                   # TODO: 問題にタグを設定しない場合はコメ
 # Provide paths to files from the same directory that this file is in
 # Accepts strings
 files:                              # 配布ファイルがない場合はコメントアウトしてください
-    - public/app.py
+    - public/image.png
+
+# attempts: 5                     # 提出回数制限がない場合はコメントアウトしてください
 
 # Hints are used to give players a way to buy or have suggestions. They are not
 # required but can be nice.
@@ -71,8 +74,8 @@ files:                              # 配布ファイルがない場合はコメ
 # solved before being available.
 # Can be removed if unused
 # Accepts challenge names as strings or challenge IDs as integers
-# requirements:         # この問題の前に正解する必要のある問題があれば、その問題名をここに登録してください
-#     - "welcome"
+requirements:         # この問題の前に正解する必要のある問題があれば、その問題名をここに登録してください
+    - "welcome"
 
 
 ############################
@@ -87,7 +90,7 @@ value: 500
 type: dynamic
 extra:
     initial: 500
-    decay: 200
+    decay: 100
     minimum: 100
 
 # Settings used for Dockerfile deployment
