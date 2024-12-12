@@ -52,7 +52,7 @@ func main() {
 
 		var sorted_challs []string
 		filepath.Walk(genre, func(path string, info os.FileInfo, err error) error {
-			if !info.IsDir() && strings.HasSuffix(info.Name(), "challenge.yaml") {
+			if !info.IsDir() && strings.HasSuffix(info.Name(), "challenge.yml") {
 				sorted_challs = append(sorted_challs, path)
 			}
 			return nil

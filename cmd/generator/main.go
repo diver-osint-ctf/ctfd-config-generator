@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	//go:embed templates/challenge.yaml.tmpl
+	//go:embed templates/challenge.yml.tmpl
 	challengeTemplate string
 
 	//go:embed templates/writeup.md.tmpl
@@ -120,7 +120,7 @@ func main() {
 	}
 
 	// write default description for each file
-	files := []string{"flag.txt", "challenge.yaml", "writeup/README.md"}
+	files := []string{"flag.txt", "challenge.yml", "writeup/README.md"}
 	for _, fileName := range files {
 		if err := readyFile(fileName, info); err != nil {
 			fmt.Fprintf(os.Stderr, "failed readyFile: %s", err.Error())
@@ -172,7 +172,7 @@ func readyFile(fileName string, info challengeInfo) error {
 	case "flag.txt":
 		fmt.Fprintln(fp, info.Flag)
 		break
-	case "challenge.yaml":
+	case "challenge.yml":
 		challengeYaml, err := generateMarkdown("challenge", challengeTemplate, info)
 		if err != nil {
 			return fmt.Errorf("failed generateMarkdown for challenge.yml: %w", err)
