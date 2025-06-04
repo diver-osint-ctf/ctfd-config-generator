@@ -25,7 +25,7 @@ var (
 	defaultGenres = []string{"web", "misc", "rev", "pwn"}
 	flagPrefix, genres = LoadCondig("config.yaml")
 
-	challengeFormat = "^[A-Za-z0-9_!?]+$"
+	challengeFormat = "^[A-Za-z0-9_!?\-]+$"
 	challengeRegExp = regexp.MustCompile(challengeFormat)
 
 	flagFormat = fmt.Sprintf("^%v{[^{}]+}$", flagPrefix)
