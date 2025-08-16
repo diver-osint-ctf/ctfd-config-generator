@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func LoadCondig(path string) ([]string) {
+func LoadCondig(path string) []string {
 	type Config struct {
 		Genres []string `yaml:"genre"`
 	}
@@ -71,7 +71,7 @@ func main() {
 			stdout, stderr, err := execCmd(cmd)
 			fmt.Println(stdout)
 			if err != nil {
-				if(stderr != "") {
+				if stderr != "" {
 					fmt.Printf("Stderr of sync: %s\n", stderr)
 				}
 				fmt.Println("Installing challenge instead of syncing...")

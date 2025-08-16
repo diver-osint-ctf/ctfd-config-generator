@@ -10,8 +10,8 @@ import (
 
 	_ "embed"
 
-	"gopkg.in/yaml.v3"
 	"github.com/manifoldco/promptui"
+	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -20,12 +20,12 @@ var (
 
 	//go:embed templates/writeup.md.tmpl
 	writeupTemplate string
-	
-	defaultFlagPrefix = "HogeCTF"
-	defaultGenres = []string{"web", "misc", "rev", "pwn"}
+
+	defaultFlagPrefix  = "HogeCTF"
+	defaultGenres      = []string{"web", "misc", "rev", "pwn"}
 	flagPrefix, genres = LoadCondig("config.yaml")
 
-	challengeFormat = "^[A-Za-z0-9_!?\-]+$"
+	challengeFormat = "^[A-Za-z0-9_!?\\-]+$"
 	challengeRegExp = regexp.MustCompile(challengeFormat)
 
 	flagFormat = fmt.Sprintf("^%v{[^{}]+}$", flagPrefix)
@@ -131,12 +131,12 @@ func main() {
 
 func LoadCondig(path string) (string, []string) {
 	type Config struct {
-		FlagPrefix string `yaml:"flag_prefix"`
-		Genres []string `yaml:"genre"`
+		FlagPrefix string   `yaml:"flag_prefix"`
+		Genres     []string `yaml:"genre"`
 	}
 	var config Config = Config{
 		FlagPrefix: defaultFlagPrefix,
-		Genres: defaultGenres,
+		Genres:     defaultGenres,
 	}
 	yml, err := os.ReadFile(path)
 	if err != nil {
@@ -171,21 +171,18 @@ func readyFile(fileName string, info challengeInfo) error {
 	switch fileName {
 	case "flag.txt":
 		fmt.Fprintln(fp, info.Flag)
-		break
 	case "challenge.yml":
 		challengeYaml, err := generateMarkdown("challenge", challengeTemplate, info)
 		if err != nil {
 			return fmt.Errorf("failed generateMarkdown for challenge.yml: %w", err)
 		}
 		fmt.Fprint(fp, challengeYaml)
-		break
 	case "writeup/README.md":
 		writeupMd, err := generateMarkdown("writeup", writeupTemplate, info)
 		if err != nil {
 			return fmt.Errorf("failed generateMarkdown for challenge.yml: %w", err)
 		}
 		fmt.Fprint(fp, writeupMd)
-		break
 	}
 
 	return nil
