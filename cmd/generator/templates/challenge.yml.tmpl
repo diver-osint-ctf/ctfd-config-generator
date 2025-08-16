@@ -16,7 +16,7 @@ description: | # TODO: 説明文を入力してください
 
 flags:
     - "{{ .Flag }}"                   # TODO: Flagを追加してください
-    # - "{{ .FlagPrefix }}{we1c0me_t5ukush1}"  # 複数指定も可能
+    # - "{{ .FlagPrefix }}{we1c0me_70_0ur_c7f}"  # 複数指定も可能
 
     # TODO: 複雑な設定をしたい場合は以下をよしなに設定してください
     # A static case sensitive flag created with a dictionary
@@ -74,7 +74,9 @@ files:                              # 配布ファイルがない場合はコメ
 # solved before being available.
 # Can be removed if unused
 # Accepts challenge names as strings or challenge IDs as integers
-requirements:         # この問題の前に正解する必要のある問題があれば、その問題名をここに登録してください
+# この問題の前に正解する必要のある問題があれば、その問題名をここに登録してください
+# welcome問題の設定は必須です。
+requirements:
     - "welcome"
 
 
@@ -90,7 +92,7 @@ value: 500
 type: dynamic
 extra:
     initial: 500
-    decay: 100
+    decay: 225
     minimum: 100
 
 # Settings used for Dockerfile deployment
